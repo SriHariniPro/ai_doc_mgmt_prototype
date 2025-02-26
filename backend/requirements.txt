@@ -1,0 +1,34 @@
+# Flask & Backend Dependencies
+Flask==2.2.5
+Flask-Cors==3.0.10
+
+# AI & NLP Libraries
+numpy==1.24.3
+pandas==1.5.3
+scikit-learn==1.2.2
+spacy==3.5.3
+nltk==3.8.1
+
+# OCR & Image Processing
+pytesseract==0.3.10
+opencv-python==4.7.0.72
+Pillow==9.5.0
+
+# Cloud & Storage
+boto3==1.26.160  # AWS SDK for Python (If using AWS S3)
+google-cloud-storage==2.9.0  # GCP Storage
+
+# PDF & Document Processing
+pdfplumber==0.9.0
+python-docx==0.8.11
+PyMuPDF==1.21.1  # Alternative for extracting text from PDFs
+
+# Database & API Utilities
+SQLAlchemy==2.0.20
+firebase-admin==6.3.0  # If using Firebase
+requests==2.31.0
+fastapi==0.110.0  # Alternative for Flask if needed
+
+# Web Scraping & Miscellaneous (If needed)
+beautifulsoup4==4.12.2
+lxml==4.9.3
