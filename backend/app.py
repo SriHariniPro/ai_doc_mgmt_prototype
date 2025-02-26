@@ -9,61 +9,54 @@ app = Flask(__name__)
 CORS(app)
 
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf', 'docx'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def extract_text(filepath):
     try:
         text = pytesseract.image_to_string(Image.open(filepath))
-        return text[:500] + '...'  # Return first 500 chars for demo
+        return text[:500] + '...'  # First 500 characters
     except Exception as e:
         return str(e)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
-    
+        return jsonify({'error': 'No file provided'}), 400
+
     file = request.files['file']
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
-    
+
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(save_path)
-        
-        # Process document
-        extracted_text = extract_text(save_path)
-        
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        extracted_text = extract_text(filepath)
+
         return jsonify({
             'filename': filename,
             'text': extracted_text,
             'metadata': {
-                'size': os.path.getsize(save_path),
+                'size': os.path.getsize(filepath),
                 'type': file.content_type
             }
         }), 200
     
-    return jsonify({'error': 'File type not allowed'}), 400
+    return jsonify({'error': 'Unsupported file type'}), 400
 
 @app.route('/documents', methods=['GET'])
 def list_documents():
-    # Demo data - replace with actual implementation
+    files = os.listdir(app.config['UPLOAD_FOLDER'])
     return jsonify([
-        {
-            'id': 1,
-            'name': 'sample.pdf',
-            'tags': ['contract', 'legal'],
-            'preview': 'Lorem ipsum...'
-        }
+        {'name': f, 'url': f"/uploads/{f}"} for f in files
     ])
 
 if __name__ == '__main__':
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
