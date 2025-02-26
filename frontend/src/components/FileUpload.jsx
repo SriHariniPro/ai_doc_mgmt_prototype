@@ -1,59 +1,48 @@
 import React, { useState } from 'react';
-import { Button, Box, Typography, CircularProgress, Alert } from '@mui/material';
-import { useDropzone } from 'react-dropzone';
 
-export default function FileUpload({ onUpload }) {
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState(null);
+const FileUpload = () => {
+  const [file, setFile] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState('');
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*, .pdf',
-    onDrop: async files => {
-      setUploading(true);
-      setError(null);
-      const file = files[0];
-      const formData = new FormData();
-      formData.append('file', file);
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
 
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/upload`, {
-          method: 'POST',
-          body: formData,
-        });
+  const handleUpload = async () => {
+    if (!file) {
+      setUploadStatus('No file selected.');
+      return;
+    }
 
-        if (!response.ok) {
-          throw new Error('Upload failed');
-        }
+    const formData = new FormData();
+    formData.append('file', file);
 
-        const result = await response.json();
-        onUpload(result);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setUploading(false);
+    try {
+      setUploadStatus('Uploading...');
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Upload failed');
       }
-    },
-  });
+
+      const result = await response.json();
+      setUploadStatus(JSON.stringify(result, null, 2));
+    } catch (error) {
+      setUploadStatus(`Error: ${error.message}`);
+    }
+  };
 
   return (
-    <Box 
-      {...getRootProps()}
-      sx={{
-        border: '2px dashed #ccc',
-        borderRadius: 2,
-        p: 4,
-        mb: 4,
-        textAlign: 'center',
-        cursor: 'pointer',
-        position: 'relative',
-      }}
-    >
-      <input {...getInputProps()} />
-      <Typography variant="body1">Drag & drop files here, or click to select</Typography>
-      <Button variant="contained" sx={{ mt: 2 }} disabled={uploading}>
-        {uploading ? <CircularProgress size={24} /> : 'Upload'}
-      </Button>
-      {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-    </Box>
+    <div>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload}>Upload</button>
+      <pre>{uploadStatus}</pre>
+    </div>
   );
-}
+};
+
+export default FileUpload;
