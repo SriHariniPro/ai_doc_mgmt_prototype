@@ -1,12 +1,33 @@
-import React from "react";
-import Upload from "./Upload";
+import React, { useState, useEffect } from 'react';
+import { Container, AppBar, Toolbar, Typography, CssBaseline } from '@mui/material';
+import FileUpload from './components/FileUpload';
+import DocumentList from './components/DocumentList';
 
-const App = () => {
-    return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <Upload />
-        </div>
-    );
-};
+function App() {
+  const [documents, setDocuments] = useState([]);
+
+  useEffect(() => {
+    // Fetch initial documents
+    fetch(process.env.REACT_APP_API_URL + '/documents')
+      .then(res => res.json())
+      .then(data => setDocuments(data));
+  }, []);
+
+  return (
+    <>
+      <CssBaseline />
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6">AI Document Manager</Typography>
+        </Toolbar>
+      </AppBar>
+      
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
+        <FileUpload onUpload={newDoc => setDocuments([...documents, newDoc])} />
+        <DocumentList documents={documents} />
+      </Container>
+    </>
+  );
+}
 
 export default App;
