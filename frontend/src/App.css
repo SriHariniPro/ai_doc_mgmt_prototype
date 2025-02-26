@@ -1,1 +1,149 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
+body {
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Container */
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.header {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* File Upload Section */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #3498db;
+  padding: 20px;
+  border-radius: 8px;
+  background: #ecf0f1;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.upload-section:hover {
+  background: #d5e8f4;
+}
+
+.upload-section input {
+  display: none;
+}
+
+.upload-text {
+  font-size: 16px;
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* Button */
+.button {
+  background: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.button:hover {
+  background: #2980b9;
+}
+
+/* Document List */
+.document-list {
+  margin-top: 20px;
+}
+
+.document-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  border-left: 4px solid #3498db;
+}
+
+.document-name {
+  font-size: 16px;
+}
+
+.document-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.document-actions button {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.view-btn {
+  background: #27ae60;
+  color: white;
+}
+
+.view-btn:hover {
+  background: #219653;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+
+  .upload-section {
+    padding: 15px;
+  }
+
+  .document-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .document-actions {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
