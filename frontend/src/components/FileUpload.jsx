@@ -19,7 +19,6 @@ const FileUpload = ({ onUpload }) => {
 
     try {
       setUploadStatus('Uploading...');
-      // Use the correct endpoint URL
       const response = await fetch(process.env.REACT_APP_API_URL + '/upload', {
         method: 'POST',
         body: formData
@@ -32,12 +31,12 @@ const FileUpload = ({ onUpload }) => {
 
       const result = await response.json();
       setUploadStatus(JSON.stringify(result, null, 2));
-      // Optionally update the document list if onUpload is provided
+      
       if (onUpload) {
         onUpload(result);
       }
     } catch (error) {
-      setUploadStatus(Error: ${error.message});
+      setUploadStatus(`Error: ${error.message}`);
     }
   };
 
