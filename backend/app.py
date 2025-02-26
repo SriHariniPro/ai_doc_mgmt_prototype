@@ -10,6 +10,10 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+@app.route("/")
+def home():
+    return jsonify({"message": "AI Document Management System Backend is running!"})
+
 @app.route("/upload", methods=["POST"])
 def upload_file():
     if "file" not in request.files:
