@@ -7,7 +7,6 @@ function App() {
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
-    // Fetch initial documents
     fetch(process.env.REACT_APP_API_URL + '/documents')
       .then(res => res.json())
       .then(data => setDocuments(data));
