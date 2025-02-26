@@ -1,6 +1,6 @@
 import os
 import pytesseract
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from PIL import Image
 from flask_cors import CORS
@@ -23,6 +23,11 @@ def extract_text(filepath):
         return text[:500] + '...'  # First 500 characters
     except Exception as e:
         return str(e)
+
+# Root route to avoid 404 error
+@app.route('/')
+def home():
+    return jsonify({'message': 'AI Document Management API is running'}), 200
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -57,6 +62,10 @@ def list_documents():
     return jsonify([
         {'name': f, 'url': f"/uploads/{f}"} for f in files
     ])
+
+@app.route('/uploads/<filename>', methods=['GET'])
+def get_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
