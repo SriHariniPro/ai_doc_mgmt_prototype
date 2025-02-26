@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const FileUpload = () => {
+const FileUpload = ({ onUpload }) => {
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
 
@@ -19,7 +19,8 @@ const FileUpload = () => {
 
     try {
       setUploadStatus('Uploading...');
-      const response = await fetch('/api/upload', {
+      // Use the correct endpoint URL
+      const response = await fetch(process.env.REACT_APP_API_URL + '/upload', {
         method: 'POST',
         body: formData
       });
@@ -31,8 +32,12 @@ const FileUpload = () => {
 
       const result = await response.json();
       setUploadStatus(JSON.stringify(result, null, 2));
+      // Optionally update the document list if onUpload is provided
+      if (onUpload) {
+        onUpload(result);
+      }
     } catch (error) {
-      setUploadStatus(`Error: ${error.message}`);
+      setUploadStatus(Error: ${error.message});
     }
   };
 
