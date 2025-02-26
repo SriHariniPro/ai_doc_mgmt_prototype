@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 
 export default function FileUpload({ onUpload }) {
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*, .pdf, .docx',
+    accept: 'image/*, .pdf',
     onDrop: async files => {
       const file = files[0];
       const formData = new FormData();
@@ -29,17 +29,12 @@ export default function FileUpload({ onUpload }) {
         p: 4,
         mb: 4,
         textAlign: 'center',
-        cursor: 'pointer',
-        '&:hover': { borderColor: 'primary.main' }
+        cursor: 'pointer'
       }}
     >
       <input {...getInputProps()} />
-      <Typography variant="body1">
-        Drag & drop files here, or click to select
-      </Typography>
-      <Button variant="contained" sx={{ mt: 2 }}>
-        Upload Document
-      </Button>
+      <Typography variant="body1">Drag & drop files here, or click to select</Typography>
+      <Button variant="contained" sx={{ mt: 2 }}>Upload</Button>
     </Box>
   );
 }
