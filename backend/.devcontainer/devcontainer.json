@@ -1,0 +1,7 @@
+{
+    "name": "Flask & React",
+    "image": "mcr.microsoft.com/devcontainers/python:3.9",
+    "features": {
+        "docker-in-docker": "latest"
+    }
+}
